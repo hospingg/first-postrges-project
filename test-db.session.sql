@@ -15,6 +15,7 @@ CREATE TABLE book(
     name varchar(300) NOT NULL CHECK(name != ''),
     public_date date,
     pages int CHECK(pages > 0)
+    user_id int REFERENCES users(id)
 );
 
 CREATE TABLE users(
@@ -25,13 +26,3 @@ CREATE TABLE users(
     phone_number varchar(14) UNIQUE,
     adress varchar(400)
 )
-
-CREATE TABLE books_to_users(
-    id serial PRIMARY KEY,
-    book_id int REFERENCES book(id),
-    user_id int REFERENCES users(id)
-)
-
-
-SELECT * FROM books_to_users
-WHERE book_id = 107;
