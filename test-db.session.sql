@@ -6,7 +6,7 @@ CREATE TABLE authors(
     last_name varchar(300),
     birthdate date,
     email varchar(300) UNIQUE,
-    phone_number varchar(14) UNIQUE,
+    phone_number varchar(36) UNIQUE
 );
 
 CREATE TABLE book(
@@ -14,7 +14,7 @@ CREATE TABLE book(
     author_id int REFERENCES authors(id),
     name varchar(300) NOT NULL CHECK(name != ''),
     public_date date,
-    pages int CHECK(pages > 0)
+    pages int CHECK(pages > 0),
     user_id int REFERENCES users(id)
 );
 
@@ -26,3 +26,5 @@ CREATE TABLE users(
     phone_number varchar(14) UNIQUE,
     adress varchar(400)
 )
+
+DROP TABLE authors

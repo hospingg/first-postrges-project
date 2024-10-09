@@ -1,4 +1,4 @@
-const {mapBookToUser} = require('../utils/mapBookToUser')
+const {mapBooks} = require('../utils/mapBooks')
 
 
 class Book{
@@ -10,9 +10,9 @@ class Book{
         return this._client.query(`SELEST * FROM ${this._tableName};`)
     }
     static async bulkCreate(books){
-        const mapped = mapBookToUser(books);
-        const quertText = `INSERT INTO ${this._tableName}(author_id, name, pages, public_date) VALUES ${mapped};`
-        console.log(quertText)
+        const mapped = mapBooks(books);
+        const quertText = `INSERT INTO ${this._tableName}(author_id, name, pages, public_date, user_id) VALUES ${mapped};`
+        // console.log(quertText)
         const prom = await this._client.query(quertText)
         return prom;
     }
