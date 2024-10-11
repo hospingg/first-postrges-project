@@ -28,3 +28,34 @@ CREATE TABLE users(
 )
 
 DROP TABLE authors
+
+
+-- Функціяя та тригер, що перевіряє чи є зараз книга у користувача
+CREATE FUNCTION check_book_availability()
+RETURNS TRIGGER AS $$
+BEGIN
+    
+    IF NEW.user_id IS NOT NULL AND EXISTS (SELECT 1 FROM book WHERE id = NEW.id AND user_id IS NOT NULL) THEN
+        RAISE EXCEPTION 'Книжка вже зайнята';
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER trigger_check_book_availability
+BEFORE INSERT OR UPDATE ON book
+FOR EACH ROW
+EXECUTE FUNCTION check_book_availability();
+
+
+
+INSERT INTO book (user_id, name, pages, author_id)
+VALUES ( 31, 'Kobsar', 150, 12);
+
+
+
+-- Перевірка роботи триггера
+UPDATE book
+SET user_id = 15
+WHERE id = 91;
